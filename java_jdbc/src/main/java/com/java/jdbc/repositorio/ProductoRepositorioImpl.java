@@ -15,7 +15,21 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
 
     @Override
     public void guardar(Producto producto) {
-
+        String query = (producto.getId() != null && producto.getId() > 0)
+                ? "UPDATE productos SET nombre = ?, precio = ?, fecha_registro = ?"
+                : "INSERT INTO productos(nombre, precio, fecha_registro) VALUES (?, ?, ?)";
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(query);) {
+            preparedStatement.setString(1, producto.getNombre());
+            preparedStatement.setLong(2, producto.getPrecio());
+            if (producto.getId() != null && producto.getId() > 0) {
+                preparedStatement.setLong(3, producto.getId());
+            } else {
+                preparedStatement.setDate(3, new Date(producto.getFechaRegistro().getTime()));
+            }
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -24,9 +38,10 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
         try (PreparedStatement preparedStatement = getConnection()
                 .prepareStatement("SELECT * FROM productos WHERE id = ?")) {
             preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                producto = crear(resultSet);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    producto = crear(resultSet);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -36,7 +51,11 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
 
     @Override
     public void eliminar(Long id) {
-
+        try(PreparedStatement preparedStatement = getConnection().prepareStatement("DELETE FROM productos WHERE id = ?")) {
+            preparedStatement.setLong(0, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -58,7 +77,7 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
 
     private static Producto crear(ResultSet resultSet) throws SQLException {
         Producto producto = new Producto();
-        producto.setId(resultSet.getInt("id"));
+        producto.setId(resultSet.getLong("id"));
         producto.setNombre(resultSet.getString("nombre"));
         producto.setPrecio(resultSet.getInt("precio"));
         producto.setFechaRegistro(resultSet.getDate("fecha_registro"));

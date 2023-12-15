@@ -7,6 +7,7 @@ import com.java.jdbc.util.ConexionMySQL;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public class EjemploJdbc {
@@ -17,6 +18,11 @@ public class EjemploJdbc {
             listar(productoRepositorio.listar());
 
             obtener(productoRepositorio.obtener(1L));
+
+            guardar(productoRepositorio);
+
+            obtener(productoRepositorio.obtener(3L));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -24,6 +30,14 @@ public class EjemploJdbc {
 
     private static void obtener(Producto producto) {
         System.out.println(producto);
+    }
+
+    public static void guardar(Repositorio<Producto> productoRepositorio) {
+        Producto producto = new Producto();
+        producto.setNombre("Teclado mecánico");
+        producto.setPrecio(500);
+        producto.setFechaRegistro(new Date());
+        productoRepositorio.guardar(producto);
     }
 
     private static void listar(List<Producto> productos) {
