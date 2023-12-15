@@ -1,15 +1,14 @@
 package com.java.jdbc;
 
+import com.java.jdbc.util.ConexionMySQL;
+
 import java.sql.*;
 import java.time.LocalDateTime;
 
 public class EjemploJdbc {
     public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/jakartadb?serverTimezone=UTC";
-        String username = "root";
-        String password = "password";
 
-        try (Connection connection = DriverManager.getConnection(url, username, password);
+        try (Connection connection = ConexionMySQL.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM productos");) {
             while (resultSet.next()) {
