@@ -5,9 +5,9 @@ import java.util.List;
 public interface Repositorio<T> {
     void guardar(T t);
 
-    T obtener(Long id);
+    T obtener(Integer id);
 
-    void eliminar(Long id);
+    void eliminar(Integer id);
 
     List<T> listar();
 }

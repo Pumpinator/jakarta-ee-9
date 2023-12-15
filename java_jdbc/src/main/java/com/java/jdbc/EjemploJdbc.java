@@ -11,36 +11,27 @@ import java.util.Date;
 import java.util.List;
 
 public class EjemploJdbc {
+    static Repositorio<Producto> productoRepositorio = new ProductoRepositorioImpl();
     public static void main(String[] args) {
-        try (Connection connection = ConexionMySQL.getConnection();) {
-            Repositorio<Producto> productoRepositorio = new ProductoRepositorioImpl();
-
-            listar(productoRepositorio.listar());
-
-            obtener(productoRepositorio.obtener(1L));
-
-            guardar(productoRepositorio);
-
-            obtener(productoRepositorio.obtener(3L));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        modificar(new Producto(3, "Teclado Razer mecánico", 700, null));
+        listar().forEach(producto -> {
+            System.out.println(producto);
+        });
     }
 
-    private static void obtener(Producto producto) {
-        System.out.println(producto);
+    public static Producto obtener(int id) {
+        return productoRepositorio.obtener(id);
     }
 
-    public static void guardar(Repositorio<Producto> productoRepositorio) {
-        Producto producto = new Producto();
-        producto.setNombre("Teclado mecánico");
-        producto.setPrecio(500);
-        producto.setFechaRegistro(new Date());
+    public static void crear(Producto producto) {
         productoRepositorio.guardar(producto);
     }
 
-    private static void listar(List<Producto> productos) {
-        productos.forEach(System.out::println);
+    public static void modificar(Producto producto) {
+        productoRepositorio.guardar(producto);
+    }
+
+    private static List<Producto> listar() {;
+        return productoRepositorio.listar();
     }
 }

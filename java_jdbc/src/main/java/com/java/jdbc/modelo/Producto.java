@@ -3,26 +3,26 @@ package com.java.jdbc.modelo;
 import java.util.Date;
 
 public class Producto {
-    private Long id;
+    private int id;
     private String nombre;
-    private Long precio;
+    private int precio;
     private Date fechaRegistro;
 
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, Integer precio, Date fechaRegistro) {
+    public Producto(Integer id, String nombre, int precio, Date fechaRegistro) {
         this.setId(id);
         this.setNombre(nombre);
         this.setPrecio(precio);
         this.setFechaRegistro(fechaRegistro);
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -34,12 +34,12 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public Long getPrecio() {
+    public int getPrecio() {
         return precio;
     }
 
-    public void setPrecio(Integer precio) {
-        this.precio = Long.valueOf(precio);
+    public void setPrecio(int precio) {
+        this.precio = precio;
     }
 
     public Date getFechaRegistro() {
