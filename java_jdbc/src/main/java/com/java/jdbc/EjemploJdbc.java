@@ -9,14 +9,9 @@ public class EjemploJdbc {
         String username = "root";
         String password = "password";
 
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = DriverManager.getConnection(url, username, password);
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM productos");
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM productos");) {
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String nombre = resultSet.getString("nombre");
@@ -26,14 +21,6 @@ public class EjemploJdbc {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                resultSet.close();
-                statement.close();
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
         }
     }
 }
