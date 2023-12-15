@@ -3,10 +3,7 @@ package com.java.jdbc.repositorio;
 import com.java.jdbc.modelo.Producto;
 import com.java.jdbc.util.ConexionMySQL;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +20,18 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
 
     @Override
     public Producto obtener(Long id) {
-        return null;
+        Producto producto = null;
+        try (PreparedStatement preparedStatement = getConnection()
+                .prepareStatement("SELECT * FROM productos WHERE id = ?")) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                producto = crear(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return producto;
     }
 
     @Override
@@ -35,14 +43,10 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
     public List<Producto> listar() {
         List<Producto> productos = new ArrayList<>();
 
-        try(Statement statement = getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM productos")) {
+        try (Statement statement = getConnection().createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM productos")) {
             while (resultSet.next()) {
-                Producto producto = new Producto();
-                producto.setId(resultSet.getInt("id"));
-                producto.setNombre(resultSet.getString("nombre"));
-                producto.setPrecio(resultSet.getInt("precio"));
-                producto.setFechaRegistro(resultSet.getDate("fecha_registro"));
+                Producto producto = crear(resultSet);
                 productos.add(producto);
             }
         } catch (SQLException e) {
@@ -50,5 +54,14 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
         }
 
         return productos;
+    }
+
+    private static Producto crear(ResultSet resultSet) throws SQLException {
+        Producto producto = new Producto();
+        producto.setId(resultSet.getInt("id"));
+        producto.setNombre(resultSet.getString("nombre"));
+        producto.setPrecio(resultSet.getInt("precio"));
+        producto.setFechaRegistro(resultSet.getDate("fecha_registro"));
+        return producto;
     }
 }
