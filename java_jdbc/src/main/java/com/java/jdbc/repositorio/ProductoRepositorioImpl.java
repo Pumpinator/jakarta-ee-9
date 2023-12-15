@@ -52,7 +52,8 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
     @Override
     public void eliminar(Integer id) {
         try(PreparedStatement preparedStatement = getConnection().prepareStatement("DELETE FROM productos WHERE id = ?")) {
-            preparedStatement.setInt(0, id);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
