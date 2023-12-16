@@ -3,10 +3,11 @@ package com.java.jdbc.modelo;
 import java.util.Date;
 
 public class Producto {
-    private int id;
+    private Integer id;
     private String nombre;
-    private int precio;
+    private Integer precio;
     private Date fechaRegistro;
+    private Categoria categoria;
 
     public Producto() {
     }
@@ -34,11 +35,11 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public int getPrecio() {
+    public Integer getPrecio() {
         return precio;
     }
 
-    public void setPrecio(int precio) {
+    public void setPrecio(Integer precio) {
         this.precio = precio;
     }
 
@@ -50,8 +51,16 @@ public class Producto {
         this.fechaRegistro = fechaRegistro;
     }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
     @Override
     public String toString() {
-        return id + "\t" + nombre + "\t" + precio + "\t" + fechaRegistro;
+        return id + "\t" + nombre + "\t" + precio + "\t" + fechaRegistro + "\t" + categoria.getNombre();
     }
 }

@@ -1,5 +1,6 @@
 package com.java.jdbc.repositorio;
 
+import com.java.jdbc.modelo.Categoria;
 import com.java.jdbc.modelo.Producto;
 import com.java.jdbc.util.ConexionMySQL;
 
@@ -16,15 +17,16 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
     @Override
     public void guardar(Producto producto) {
         String query = (producto.getId() != null && producto.getId() > 0)
-                ? "UPDATE productos SET nombre = ?, precio = ? WHERE id = ?"
-                : "INSERT INTO productos(nombre, precio, fecha_registro) VALUES (?, ?, ?)";
+                ? "UPDATE productos SET nombre = ?, precio = ?, categoria_id = ? WHERE id = ?"
+                : "INSERT INTO productos(nombre, precio, categoria_id, fecha_registro) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query);) {
             preparedStatement.setString(1, producto.getNombre());
             preparedStatement.setInt(2, producto.getPrecio());
+            preparedStatement.setInt(3, producto.getCategoria().getId());
             if (producto.getId() != null && producto.getId() > 0) {
-                preparedStatement.setInt(3, producto.getId());
+                preparedStatement.setInt(4, producto.getId());
             } else {
-                preparedStatement.setDate(3, new Date(producto.getFechaRegistro().getTime()));
+                preparedStatement.setDate(4, new Date(producto.getFechaRegistro().getTime()));
             }
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -36,7 +38,7 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
     public Producto obtener(Integer id) {
         Producto producto = null;
         try (PreparedStatement preparedStatement = getConnection()
-                .prepareStatement("SELECT * FROM productos WHERE id = ?")) {
+                .prepareStatement("SELECT p.*, c.nombre categoria FROM productos p INNER JOIN categorias c ON p.categoria_id = c.id WHERE id = ?")) {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -51,7 +53,7 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
 
     @Override
     public void eliminar(Integer id) {
-        try(PreparedStatement preparedStatement = getConnection().prepareStatement("DELETE FROM productos WHERE id = ?")) {
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement("DELETE FROM productos WHERE id = ?")) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -64,7 +66,7 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
         List<Producto> productos = new ArrayList<>();
 
         try (Statement statement = getConnection().createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM productos")) {
+             ResultSet resultSet = statement.executeQuery("SELECT p.*, c.nombre categoria FROM productos p INNER JOIN categorias c ON p.categoria_id = c.id")) {
             while (resultSet.next()) {
                 Producto producto = crear(resultSet);
                 productos.add(producto);
@@ -77,13 +79,17 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
     }
 
     private static Producto crear(ResultSet resultSet) throws SQLException {
-        Producto producto = new Producto();
-
-        producto.setId(resultSet.getInt("id"));
-        producto.setNombre(resultSet.getString("nombre"));
-        producto.setPrecio(resultSet.getInt("precio"));
-        producto.setFechaRegistro(resultSet.getDate("fecha_registro"));
-
+        Producto producto = new Producto(
+                resultSet.getInt("id"),
+                resultSet.getString("nombre"),
+                resultSet.getInt("precio"),
+                resultSet.getDate("fecha_registro")
+        );
+        Categoria categoria = new Categoria(
+                resultSet.getInt("categoria_id"),
+                resultSet.getString("categoria")
+        );
+        producto.setCategoria(categoria);
         return producto;
     }
 }

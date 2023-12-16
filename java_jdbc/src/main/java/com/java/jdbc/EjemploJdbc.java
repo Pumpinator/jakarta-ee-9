@@ -12,6 +12,7 @@ import java.util.List;
 
 public class EjemploJdbc {
     static Repositorio<Producto> productoRepositorio = new ProductoRepositorioImpl();
+
     public static void main(String[] args) {
         listar().forEach(producto -> {
             System.out.println(producto);
@@ -34,7 +35,8 @@ public class EjemploJdbc {
         productoRepositorio.eliminar(id);
     }
 
-    private static List<Producto> listar() {;
+    private static List<Producto> listar() {
+        ;
         return productoRepositorio.listar();
     }
 }
