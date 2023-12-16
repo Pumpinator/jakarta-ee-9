@@ -15,13 +15,10 @@ public class EjemploJdbc {
     static Repositorio<Producto> productoRepositorio = new ProductoRepositorioImpl();
 
     public static void main(String[] args) {
-        try(Connection connection = ConexionMySQL.getConnection()) {
-            listar().forEach(producto -> {
-                System.out.println(producto);
-            });
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println(obtener(1));
+        listar().forEach(producto -> {
+            System.out.println(producto);
+        });
     }
 
     public static Producto obtener(int id) {

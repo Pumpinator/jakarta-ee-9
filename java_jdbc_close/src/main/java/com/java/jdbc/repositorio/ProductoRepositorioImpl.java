@@ -19,7 +19,8 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
         String query = (producto.getId() != null && producto.getId() > 0)
                 ? "UPDATE productos SET nombre = ?, precio = ?, categoria_id = ? WHERE id = ?"
                 : "INSERT INTO productos(nombre, precio, categoria_id, fecha_registro) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(query);) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);) {
             preparedStatement.setString(1, producto.getNombre());
             preparedStatement.setInt(2, producto.getPrecio());
             preparedStatement.setInt(3, producto.getCategoria().getId());
@@ -37,8 +38,8 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
     @Override
     public Producto obtener(Integer id) {
         Producto producto = null;
-        try (PreparedStatement preparedStatement = getConnection()
-                .prepareStatement("SELECT p.*, c.nombre categoria FROM productos p INNER JOIN categorias c ON p.categoria_id = c.id WHERE p.id = ?")) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT p.*, c.nombre categoria FROM productos p INNER JOIN categorias c ON p.categoria_id = c.id WHERE p.id = ?")) {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -53,7 +54,8 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
 
     @Override
     public void eliminar(Integer id) {
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement("DELETE FROM productos WHERE id = ?")) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM productos WHERE id = ?")) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -65,7 +67,8 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
     public List<Producto> listar() {
         List<Producto> productos = new ArrayList<>();
 
-        try (Statement statement = getConnection().createStatement();
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT p.*, c.nombre categoria FROM productos p INNER JOIN categorias c ON p.categoria_id = c.id")) {
             while (resultSet.next()) {
                 Producto producto = crear(resultSet);
