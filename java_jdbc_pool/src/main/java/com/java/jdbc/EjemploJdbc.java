@@ -15,6 +15,10 @@ public class EjemploJdbc {
     static Repositorio<Producto> productoRepositorio = new ProductoRepositorioImpl();
 
     public static void main(String[] args) {
+        Producto notebook = new Producto(null, "Notebook Omen HP", 2900, new Date());
+        Categoria categoria = new Categoria(3, null);
+        notebook.setCategoria(categoria);
+        crear(notebook);
         listar().forEach(producto -> {
             System.out.println(producto);
         });
