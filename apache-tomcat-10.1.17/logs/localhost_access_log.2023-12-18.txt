@@ -1,0 +1,9 @@
+127.0.0.1 - admin [18/Dec/2023:21:12:58 -0600] "PUT /manager/text/deploy?path=%2Fwebapp&update=true HTTP/1.1" 200 64
+127.0.0.1 - - [18/Dec/2023:21:14:12 -0600] "GET /webapp/ HTTP/1.1" 200 152
+127.0.0.1 - - [18/Dec/2023:21:14:57 -0600] "GET /manager HTTP/1.1" 302 -
+127.0.0.1 - - [18/Dec/2023:21:14:58 -0600] "GET /manager/ HTTP/1.1" 302 -
+127.0.0.1 - - [18/Dec/2023:21:14:58 -0600] "GET /manager/html HTTP/1.1" 401 2562
+127.0.0.1 - admin [18/Dec/2023:21:15:03 -0600] "GET /manager/html HTTP/1.1" 200 20080
+127.0.0.1 - - [18/Dec/2023:21:15:03 -0600] "GET /manager/css/manager.css HTTP/1.1" 200 2946
+127.0.0.1 - - [18/Dec/2023:21:15:03 -0600] "GET /manager/images/tomcat.svg HTTP/1.1" 200 68761
+127.0.0.1 - - [18/Dec/2023:21:15:03 -0600] "GET /manager/images/asf-logo.svg HTTP/1.1" 200 20712
