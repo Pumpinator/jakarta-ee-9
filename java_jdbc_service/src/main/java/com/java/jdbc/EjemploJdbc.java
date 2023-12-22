@@ -23,15 +23,15 @@ public class EjemploJdbc {
         catalogoServicio.guardarProductoConCategoria(
                 new Producto(
                         null,
-                        "Lampara LED escritorio",
-                        990,
+                        "Café en grano",
+                        30,
                         new Date(),
                         null,
-                        "abcdefgh12"
+                        "abcdefghi1"
                 ),
                 new Categoria(
                         null,
-                        "Iluminación"
+                        "Despensa"
                 )
         );
 
