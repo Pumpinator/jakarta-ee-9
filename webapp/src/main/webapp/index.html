@@ -5,7 +5,20 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Hola Tomcat</h1>
-<a href="/webapp/parametros/get?entrada=Entrada">Enviar parámetro de entrada get?entrada=Entrada</a>
+<h1>Parámetros GET</h1>
+<ul>
+    <li>
+        <a href="/webapp/parametros/get?cadena1=Cadena2&cadena2=Cadena2&entero=12345">Enviar 3 parámetros cadena1=Cadena1&cadena2=Cadena2&entero=12345</a>
+    </li>
+    <li>
+        <a href="/webapp/parametros/get?cadena1=Cadena1">Enviar 1 parámetro get?cadena=Cadena1</a>
+    </li>
+    <li>
+        <a href="/webapp/parametros/get?cadena1=Cadena2">Enviar 1 parámetro get?cadena2=Cadena2</a>
+    </li>
+    <li>
+        <a href="/webapp/parametros/get">Enviar ningún parámetro</a>
+    </li>
+</ul>
 </body>
 </html>

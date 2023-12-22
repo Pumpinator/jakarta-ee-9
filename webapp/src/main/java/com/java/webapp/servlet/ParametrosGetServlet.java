@@ -16,7 +16,9 @@ public class ParametrosGetServlet extends HttpServlet {
         resp.setContentType("text/html");
         PrintWriter writer = resp.getWriter();
 
-        String entrada = req.getParameter("entrada");
+        String cadena1 = req.getParameter("cadena1");
+        String cadena2 = req.getParameter("cadena2");
+
         writer.println("<!DOCTYPE html>");
         writer.println("<html>");
         writer.println("      <head>");
@@ -25,7 +27,22 @@ public class ParametrosGetServlet extends HttpServlet {
         writer.println("      </head>");
         writer.println("      <body>");
         writer.println("          <h1>Parámetros GET</h1>");
-        writer.println("          <h2>El parametro de entrada es " + entrada + "</h2>");
+        if (cadena1 != null && cadena2 != null) {
+            writer.println("          <h2>El parámetro de entrada1 es " + cadena1 + "</h2>");
+            writer.println("          <h2>El parámetro de entrada2 es " + cadena2 + "</h2>");
+        } else if (cadena1 != null) {
+            writer.println("          <h2>El parámetro de entrada1 es " + cadena1 + "</h2>");
+        } else if (cadena2 != null) {
+            writer.println("          <h2>El parámetro de entrada2 es " + cadena2 + "</h2>");
+        } else {
+            writer.println("          <h2>No se han recibido parámetros de cadena</h2>");
+        }
+        try {
+            Integer entero = Integer.valueOf(req.getParameter("entero"));
+            writer.println("          <h2>El parámetro de entero es " + entero + "</h2>");
+        } catch (NumberFormatException exception) {
+            writer.println("          <h2>No se ha recibido parámetro de entero</h2>");
+        }
         writer.println("      </body>");
         writer.println("</html>");
         writer.close();
