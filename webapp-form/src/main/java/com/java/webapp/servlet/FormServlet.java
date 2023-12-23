@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 @WebServlet("/form")
@@ -24,29 +26,29 @@ public class FormServlet extends HttpServlet {
         String[] lenguajes = req.getParameterValues("lenguajes");
         String[] roles = req.getParameterValues("roles");
         String idioma = req.getParameter("idioma");
-        Boolean habilitar = req.getParameter("habilitar").equals("on") ? true : false;
+        Boolean habilitar = req.getParameter("habilitar") != null ? true : false;
 
-        Stack<String> errores = new Stack<>();
+        Map<String, String> errores = new HashMap<>();
         if (username == null || username.isBlank()) {
-            errores.push("Username es obligatorio");
+            errores.put("username", "Username es obligatorio");
         }
         if (password == null || password.isBlank()) {
-            errores.push("Password es obligatorio");
+            errores.put("password", "Password es obligatorio");
         }
         if (email == null || !email.contains("@")) {
-            errores.push("Email es obligatorio y debe ser válido");
+            errores.put("email", "Email es obligatorio y debe ser válido");
         }
         if (pais == null || pais.isBlank()) {
-            errores.push("País es obligatorio");
+            errores.put("pais", "País es obligatorio");
         }
         if (lenguajes == null || lenguajes.length == 0) {
-            errores.push("Lemguajes es obligatorio");
+            errores.put("lenguajes", "Lenguajes es obligatorio");
         }
         if (roles == null || roles.length == 0) {
-            errores.push("Roles es obligatorio");
+            errores.put("roles", "Roles es obligatorio");
         }
         if (idioma == null) {
-            errores.push("Idioma es obligatorio");
+            errores.put("idioma", "Idioma es obligatorio");
         }
 
         if (errores.isEmpty()) {
@@ -56,48 +58,97 @@ public class FormServlet extends HttpServlet {
                 writer.println("    <head>");
                 writer.println("        <meta charset=\"UTF-8\">");
                 writer.println("        <title>Formulario Respuesta</title>");
+                writer.println("        <link rel=\"stylesheet\" href=\"webjars/bootstrap/5.3.2/css/bootstrap.min.css\">");
                 writer.println("    </head>");
                 writer.println("    <body>");
-                writer.println("        <h1>Formulario Respuesta</h1>");
-                writer.println("        <ul>");
-                writer.println("            <li>Id " + id + "</li>");
-                writer.println("        </ul>");
-                writer.println("        <ul>");
-                writer.println("            <li>Username " + username + "</li>");
-                writer.println("        </ul>");
-                writer.println("        <ul>");
-                writer.println("            <li>Password " + password + "</li>");
-                writer.println("        </ul>");
-                writer.println("        <ul>");
-                writer.println("            <li>Email " + email + "</li>");
-                writer.println("        </ul>");
-                writer.println("        <ul>");
-                writer.println("            <li>País " + pais + "</li>");
-                writer.println("        </ul>");
-                writer.println("        <ul>");
-                writer.println("            <li>Lenguajes ");
-                writer.println("                <ul>");
+                writer.println("    <div class=\"container-fluid\">");
+                writer.println("            <h3 class=\"text-center border-bottom border-dark\">Formulario Respuesta</h3>");
+                writer.println("            <div class=\"p-3\">");
+                writer.println("                <div class=\"container-fluid\">");
+                writer.println("                    <div class=\"row mb-3\">");
+                writer.println("                        <label class=\"form-label\">");
+                writer.println("                        Id");
+                writer.println("                        <div>");
+                writer.println("                            <input class=\"col form-control\" type=\"text\" name=\"id\" value=" + id + " disabled>");
+                writer.println("                        </div>");
+                writer.println("                        </label>");
+                writer.println("                    </div>");
+                writer.println("                    <div class=\"row mb-3\">");
+                writer.println("                        <label class=\"form-label\">");
+                writer.println("                        Username");
+                writer.println("                        <div>");
+                writer.println("                            <input class=\"col form-control\" type=\"text\" name=\"username\" value=" + username + " disabled>");
+                writer.println("                        </div>");
+                writer.println("                        </label>");
+                writer.println("                    </div>");
+                writer.println("                    <div class=\"row mb-3\">");
+                writer.println("                        <label class=\"form-label\">");
+                writer.println("                        Password");
+                writer.println("                        <div>");
+                writer.println("                            <input class=\"col form-control\" type=\"text\" name=\"password\" value=" + password + " disabled>");
+                writer.println("                        </div>");
+                writer.println("                        </label>");
+                writer.println("                    </div>");
+                writer.println("                    <div class=\"row mb-3\">");
+                writer.println("                        <label class=\"form-label\">");
+                writer.println("                        Email");
+                writer.println("                        <div>");
+                writer.println("                            <input class=\"col form-control\" type=\"text\" name=\"email\" value=" + email + " disabled>");
+                writer.println("                        </div>");
+                writer.println("                        </label>");
+                writer.println("                    </div>");
+                writer.println("                    <div class=\"row mb-3\">");
+                writer.println("                        <label class=\"form-label\">");
+                writer.println("                        Pais");
+                writer.println("                        <div>");
+                writer.println("                            <select class=\"col form-select\" name=\"pais\" disabled>");
+                writer.println("                                <option value=" + pais + " selected>" + pais + "</option>");
+                writer.println("                            </select>");
+                writer.println("                        </div>");
+                writer.println("                        </label>");
+                writer.println("                    </div>");
+                writer.println("                    <div class=\"row mb-3\">");
+                writer.println("                        <label class=\"form-label\">");
+                writer.println("                        Lenguajes");
+                writer.println("                        <div>");
+                writer.println("                            <select class=\"col form-select\" name=\"pais\" multiple disabled>");
                 Arrays.asList(lenguajes).forEach(lenguaje -> {
-                    writer.println("                <li>" + lenguaje + "</li>");
+                    writer.println("                        <option value=" + lenguaje + " selected>" + lenguaje + "</option>");
                 });
-                writer.println("                </ul>");
-                writer.println("            </li>");
-                writer.println("        </ul>");
-                writer.println("        <ul>");
-                writer.println("            <li>Roles ");
-                writer.println("                <ul>");
+                writer.println("                            </select>");
+                writer.println("                        </div>");
+                writer.println("                        </label>");
+                writer.println("                    </div>");
+                writer.println("                    <div class=\"row mb-3\">");
+                writer.println("                        <label class=\"col-auto form-label\">Roles</label>");
+                writer.println("                        <div class=\"col-auto\">");
                 Arrays.asList(roles).forEach(rol -> {
-                    writer.println("                    <li>" + rol + "</li>");
+                    writer.println("                            <label class=\"form-check-label\">");
+                    writer.println("                                " + rol);
+                    writer.println("                                <input class=\"form-check\" type=\"checkbox\" name=\"roles\" value=" + rol + " checked disabled>");
+                    writer.println("                            </label>");
                 });
-                writer.println("                </ul>");
-                writer.println("            </li>");
-                writer.println("          </ul>");
-                writer.println("        <ul>");
-                writer.println("            <li>Idioma " + idioma + "</li>");
-                writer.println("        </ul>");
-                writer.println("        <ul>");
-                writer.println("            <li>Habilitar " + habilitar + "</li>");
-                writer.println("        </ul>");
+                writer.println("                        </div>");
+                writer.println("                    </div>");
+                writer.println("                    <div class=\"row mb-3\">");
+                writer.println("                        <label class=\"form-label\">");
+                writer.println("                        Idioma");
+                writer.println("                        <div>");
+                writer.println("                            <select class=\"col form-select\" name=\"idioma\" disabled>");
+                writer.println("                                <option value=" + idioma + " selected>" + idioma + "</option>");
+                writer.println("                            </select>");
+                writer.println("                        </div>");
+                writer.println("                        </label>");
+                writer.println("                    </div>");
+                writer.println("                    <div class=\"mb-3\">");
+                writer.println("                        <label class=\"form-check-label\">");
+                writer.println("                            Habilitar");
+                writer.println("                            <input class=\"form-check\" type=\"checkbox\" name=\"habilitar\" " + (habilitar ? "checked" : "") + " disabled>");
+                writer.println("                        </label");
+                writer.println("                    </div>");
+                writer.println("                </div>");
+                writer.println("            </div>");
+                writer.println("        </div>");
                 writer.println("    </body>");
                 writer.println("</html>");
             }
