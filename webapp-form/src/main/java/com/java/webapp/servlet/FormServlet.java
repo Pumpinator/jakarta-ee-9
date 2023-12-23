@@ -8,9 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Stack;
 
 @WebServlet("/form")
@@ -50,17 +48,18 @@ public class FormServlet extends HttpServlet {
         if (idioma == null) {
             errores.push("Idioma es obligatorio");
         }
-        try (PrintWriter writer = resp.getWriter();) {
-            writer.println("<!DOCTYPE html>");
-            writer.println("<html>");
-            writer.println("    <head>");
-            writer.println("        <meta charset=\"UTF-8\">");
-            writer.println("        <title>Formulario Respuesta</title>");
-            writer.println("    </head>");
-            writer.println("    <body>");
-            writer.println("        <h1>Formulario Respuesta</h1>");
-            writer.println("        <ul>");
-            if (errores.isEmpty()) {
+
+        if (errores.isEmpty()) {
+            try (PrintWriter writer = resp.getWriter();) {
+                writer.println("<!DOCTYPE html>");
+                writer.println("<html>");
+                writer.println("    <head>");
+                writer.println("        <meta charset=\"UTF-8\">");
+                writer.println("        <title>Formulario Respuesta</title>");
+                writer.println("    </head>");
+                writer.println("    <body>");
+                writer.println("        <h1>Formulario Respuesta</h1>");
+                writer.println("        <ul>");
                 writer.println("            <li>Id " + id + "</li>");
                 writer.println("        </ul>");
                 writer.println("        <ul>");
@@ -98,16 +97,18 @@ public class FormServlet extends HttpServlet {
                 writer.println("        </ul>");
                 writer.println("        <ul>");
                 writer.println("            <li>Habilitar " + habilitar + "</li>");
-            } else {
-                writer.println("<p>PILA DE ERRORES</p>");
-                errores.forEach(error -> {
-                    writer.println("<li>" + error + "</li>");
-                });
-                writer.println("<p><a href=\"/webapp-form\">Volver atrás</a></p>");
+                writer.println("        </ul>");
+                writer.println("    </body>");
+                writer.println("</html>");
             }
-            writer.println("        </ul>");
-            writer.println("    </body>");
-            writer.println("</html>");
+        } else {
+//                writer.println("<p>PILA DE ERRORES</p>");
+//                errores.forEach(error -> {
+//                    writer.println("<li>" + error + "</li>");
+//                });
+//                writer.println("<p><a href=\"/webapp-form\">Volver atrás</a></p>");
+            req.setAttribute("errores", errores);
+            getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
         }
     }
 

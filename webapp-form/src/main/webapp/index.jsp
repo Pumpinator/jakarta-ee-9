@@ -1,3 +1,5 @@
+<%@page contentType="text/html; ISO-8859-1" pageEncoding="UTF-8" %>
+<%@page import="java.util.Stack" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +8,22 @@
 </head>
 <body>
 <h3>Formulario</h3>
+<%
+    Stack<String> errores = (Stack<String>) request.getAttribute("errores");
+    if (errores != null && errores.size() > 0) {
+%>
+<ul>
+    <%
+        for (String error : errores) {
+    %>
+    <li>
+        <%=error%>
+    </li>
+    <%
+            }
+        }
+    %>
+</ul>
 <form action="/webapp-form/form" method="post">
     <div>
         <div>
