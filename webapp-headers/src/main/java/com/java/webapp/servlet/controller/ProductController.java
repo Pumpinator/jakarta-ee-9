@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.java.webapp.servlet.model.Product;
 import com.java.webapp.servlet.service.ProductService;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,34 @@ import java.util.List;
 
 @WebServlet({"/products", "/products/excel", "/products/json"})
 public class ProductController extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ServletInputStream jsonStream = req.getInputStream();
+        ObjectMapper objectMapper = new ObjectMapper();
+        Product product = objectMapper.readValue(jsonStream, Product.class);
+        resp.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter writer = resp.getWriter();) {
+            writer.println("<!DOCTYPE html>");
+            writer.println("<html>");
+            writer.println("    <head>");
+            writer.println("        <meta charset=\"UTF-8\">");
+            writer.println("        <title>Products | JSON</title>");
+            writer.println("    </head>");
+            writer.println("    <body>");
+            writer.println("        <div>");
+            writer.println("            <h1>Products | JSON</h1>");
+            writer.println("            <ul>");
+            writer.println("                <li>Id " + product.getId() + "</l1>");
+            writer.println("                <li>Name " + product.getName() + "</l1>");
+            writer.println("                <li>Category " + product.getCategory() + "</l1>");
+            writer.println("                <li>Price " + product.getPrice() + "</l1>");
+            writer.println("            </ul>");
+            writer.println("        </div>");
+            writer.println("    </body>");
+            writer.println("</html>");
+        }
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductService productService = new ProductService();
