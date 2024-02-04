@@ -8,12 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/redirect")
-public class RedirectController extends HttpServlet {
+@WebServlet("/servlet")
+public class ServetController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        resp.setHeader("Location", req.getContextPath() + "/products");
-//        resp.setStatus(HttpServletResponse.SC_FOUND);
-        resp.sendRedirect(req.getContextPath() + "/products");
+        getServletContext().getRequestDispatcher("/products").forward(req, resp);
     }
 }
