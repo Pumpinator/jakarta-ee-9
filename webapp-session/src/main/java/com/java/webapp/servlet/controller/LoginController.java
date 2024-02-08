@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
 
-@WebServlet({"/login"})
+@WebServlet("/login")
 public class LoginController extends HttpServlet {
     final static String USERNAME = "admin";
     final static String PASSWORD = "password";

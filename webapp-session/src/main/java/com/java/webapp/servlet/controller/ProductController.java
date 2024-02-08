@@ -68,19 +68,23 @@ public class ProductController extends HttpServlet {
                 writer.println("<html>");
                 writer.println("    <head>");
                 writer.println("        <meta charset=\"UTF-8\">");
-                writer.println("        <title>Products | Request Headers</title>");
+                writer.println("        <title>Products | Session</title>");
                 writer.println("    </head>");
                 writer.println("    <body>");
                 writer.println("        <div>");
-                writer.println("            <h1>Products | Request Headers</h1>");
-                if (username.isPresent()) writer.println("<div style='color: blue;'>Welcome, " + username.get() + "</div>");
+                writer.println("            <h1>Products | Session</h1>");
+                if (username.isPresent())
+                    writer.println("<div style='color: blue;'>Welcome, " + username.get() + "</div>");
                 writer.println("            <table>");
                 writer.println("                <thead>");
                 writer.println("                    <tr>");
                 writer.println("                        <th>ID</th>");
                 writer.println("                        <th>NAME</th>");
                 writer.println("                        <th>CATEGORY</th>");
-                if (username.isPresent()) writer.println("<th>PRICE</th>");
+                if (username.isPresent()) {
+                    writer.println("                    <th>PRICE</th>");
+                    writer.println("                    <th></th>");
+                }
                 writer.println("                    </tr>");
                 writer.println("                </thead>");
                 writer.println("                <tbody>");
@@ -89,7 +93,10 @@ public class ProductController extends HttpServlet {
                     writer.println("                    <td>" + product.getId() + "</td>");
                     writer.println("                    <td>" + product.getName() + "</td>");
                     writer.println("                    <td>" + product.getCategory() + "</td>");
-                    if (username.isPresent()) writer.println("                    <td>" + product.getPrice() + "</td>");
+                    if (username.isPresent()) {
+                        writer.println("                <td>" + product.getPrice() + "</td>");
+                        writer.println("                <td><a href='" + req.getContextPath() + "/cart/add?id=" + product.getId() + "'>/cart/add?id=" + product.getId() + "</a></td>");
+                    }
                     writer.println("                </tr>");
                 });
                 writer.println("                </tbody>");

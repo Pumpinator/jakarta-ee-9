@@ -3,11 +3,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login | Request Headers</title>
+    <title>Login | Session</title>
 </head>
 <body>
 <div>
-    <h1>Login</h1>
+    <h1>Login | Session</h1>
     <form action="login" method="POST">
         <div>
             <label>
@@ -25,6 +25,9 @@
             <button type="submit">Login</button>
         </div>
     </form>
+    <div>
+        <a href="/webapp-session">Go back.</a>
+    </div>
 </div>
 </body>
 </html>
