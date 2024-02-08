@@ -26,6 +26,31 @@ public class Cart {
         }
     }
 
+    public void removeProducts(List<String> ids) {
+        if(ids != null) {
+            ids.forEach(this::removeProduct);
+        }
+    }
+
+    public void removeProduct(String id) {
+        Optional<Item> item = findItem(id);
+        item.ifPresent(i -> items.remove(i));
+    }
+
+    private Optional<Item> findItem(String id) {
+        return items
+                .stream()
+                .filter(item ->
+                        id.equals(Long.toString(item.getProduct().getId()))
+                )
+                .findAny();
+    }
+
+    public void updateQuantity(String id, int quantity) {
+        Optional<Item> item = findItem(id);
+        item.ifPresent(i -> i.setQuantity(quantity));
+    }
+
     public double getTotal() {
         return items.stream().mapToDouble(Item::getTotal).sum();
     }

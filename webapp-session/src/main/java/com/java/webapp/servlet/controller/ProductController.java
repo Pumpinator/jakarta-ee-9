@@ -55,6 +55,9 @@ public class ProductController extends HttpServlet {
         LoginService loginService = new LoginServiceSessionImpl();
         Optional<String> username = loginService.getUsername(req);
 
+        String reqMessage = (String) req.getAttribute("request key"); // ONE EVERY REQUEST
+        String appMessage = (String) getServletContext().getAttribute("context key"); // SINGLETON
+
         resp.setContentType("text/html;charset=UTF-8");
         boolean isJson = req.getServletPath().endsWith("json");
 
@@ -104,6 +107,10 @@ public class ProductController extends HttpServlet {
                 writer.println("            <a href=\"products/excel\">Export XLS</a>");
                 writer.println("            <a href=\"products/json\">Export JSON</a>");
                 writer.println("            <a href=\"/webapp-session\"}>Go back...</a>");
+                writer.println("        </div>");
+                writer.println("        <div>");
+                writer.println("            <h1>App Message -> " + appMessage + "</h1>");
+                writer.println("            <h1>Req Message -> " + reqMessage + "</h1>");
                 writer.println("        </div>");
                 writer.println("      </body>");
                 writer.println("</html>");
