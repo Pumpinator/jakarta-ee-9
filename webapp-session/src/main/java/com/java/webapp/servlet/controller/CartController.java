@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
@@ -49,7 +50,8 @@ public class CartController extends HttpServlet {
     }
 
     private static void addItem(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        ProductService productService = new ProductService();
+        Connection connection = (Connection) req.getAttribute("connection");
+        ProductService productService = new ProductService(connection);
         Long id = Long.parseLong(req.getParameter("id"));
         Optional<Product> product = productService.getById(id);
         if (product.isPresent()) {

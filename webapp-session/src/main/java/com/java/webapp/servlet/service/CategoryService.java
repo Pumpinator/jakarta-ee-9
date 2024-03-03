@@ -1,8 +1,9 @@
 package com.java.webapp.servlet.service;
 
 import com.java.webapp.servlet.exception.ConnectionException;
+import com.java.webapp.servlet.model.Category;
 import com.java.webapp.servlet.model.Product;
-import com.java.webapp.servlet.repository.ProductRepository;
+import com.java.webapp.servlet.repository.CategoryRepository;
 import com.java.webapp.servlet.repository.Repository;
 
 import java.sql.Connection;
@@ -10,33 +11,32 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class ProductService {
+public class CategoryService {
+    private Repository<Category> categoryRepository;
 
-    private Repository<Product> productRepository;
-
-    public ProductService(Connection connection) {
-        this.productRepository = new ProductRepository(connection);
+    public CategoryService(Connection connection) {
+        this.categoryRepository = new CategoryRepository(connection);
     }
 
-    public List<Product> getAll() {
+    public List<Category> getAll() {
         try {
-            return productRepository.findAll();
+            return categoryRepository.findAll();
         } catch (SQLException e) {
             throw new ConnectionException(e.getMessage(), e.getCause());
         }
     }
 
-    public Optional<Product> getById(Long id) {
+    public Optional<Category> getById(Long id) {
         try {
-            return Optional.ofNullable(productRepository.findById(id));
+            return Optional.ofNullable(categoryRepository.findById(id));
         } catch (SQLException e) {
             throw new ConnectionException(e.getMessage(), e.getCause());
         }
     }
 
-    public void save(Product product) {
+    public void save(Category category) {
         try {
-            productRepository.save(product);
+            categoryRepository.save(category);
         } catch (SQLException e) {
             throw new ConnectionException(e.getMessage(), e.getCause());
         }
@@ -44,7 +44,7 @@ public class ProductService {
 
     public boolean deleteById(Long id) {
         try {
-            return productRepository.deleteById(id);
+            return categoryRepository.deleteById(id);
         } catch (SQLException e) {
             throw new ConnectionException(e.getMessage(), e.getCause());
         }
