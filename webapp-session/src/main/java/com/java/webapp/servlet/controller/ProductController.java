@@ -77,7 +77,7 @@ public class ProductController extends HttpServlet {
             errors.put("sku", "The sku maxium length is 10 characters.");
         if (registerDate == null || registerDate.isBlank())
             errors.put("register_date", "Register date is required");
-        if (price.equals(0))
+        if (price.equals(0.0))
             errors.put("price", "The price is required");
         if (categoryId.equals(0L))
             errors.put("category", "The category is required");

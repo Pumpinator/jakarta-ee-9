@@ -16,12 +16,12 @@
     <h1>Products</h1>
     <c:if test="${username.present}">
         <div>
-            Welcome, <c:out value="${username.get()}"/>
+            Welcome, ${username.get()}
         </div>
-    </c:if>
     <div>
-        <a href="<c:out value="${pageContext.request.contextPath}" />/product">Add...</a>
+        <a href="${pageContext.request.contextPath}/product">Add...</a>
     </div>
+    </c:if>
     <div>
         <table>
             <thead>
@@ -38,30 +38,31 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${products}" var="product">
+            <c:forEach var="product" items="${products}">
                 <tr>
                     <td>
-                        <c:out value="${product.id}"/>
+                            ${product.id}
                     </td>
                     <td>
-                        <c:out value="${product.name}"/>
+                            ${product.name}
                     </td>
                     <td>
-                        <c:out value="${product.category.name}"/>
+                            ${product.category.name}
                     </td>
                     <c:if test="${username.present}">
-                        <td><c:out value="${product.price}"/>
+                        <td>
+                                ${product.price}
                         </td>
                         <td>
-                            <a href="<c:out value="${pageContext.request.contextPath}" />/cart/add?id=<c:out value="${product.id}" />">Add
+                            <a href="${pageContext.request.contextPath}/cart/add?id=${product.id}">Add
                                 to cart</a>
                         </td>
                         <td>
-                            <a href="<c:out value="${pageContext.request.contextPath}" />/product?id=<c:out value="${product.id}" />">Edit
+                            <a href="${pageContext.request.contextPath}/product?id=${product.id}">Edit
                                 product</a>
                         </td>
                         <td>
-                            <a href="<c:out value="${pageContext.request.contextPath}" />/product/delete?id=<c:out value="${product.id}" />"
+                            <a href="${pageContext.request.contextPath}/product/delete?id=${product.id}"
                                onclick="return confirm('Are you sure?')">Delete product</a>
                         </td>
                     </c:if>
@@ -70,7 +71,7 @@
             </tbody>
         </table>
     </div>
-    <a href="<c:out value="${pageContext.request.contextPath}" />">Go back...</a>
+    <a href="${pageContext.request.contextPath}">Go back...</a>
     <div>
         <p>
             ${applicationScope.appMessage}
